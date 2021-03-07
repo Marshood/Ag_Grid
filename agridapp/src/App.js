@@ -262,6 +262,13 @@ function App() {
       this.currentValue = null;
       this.eFilterInput = this.eGui.querySelector('input');
       this.eFilterInput.style.color = params.color;
+      
+      this.eFilterInput.style.position='absolute';
+      this.eFilterInput.style.left='10px';
+      this.eFilterInput.style.right='10px'
+      this.eFilterInput.style.top='10px'
+      this.eFilterInput.style.bottom='10px'
+
       var that = this;
       function onInputBoxChanged() {
         if (that.eFilterInput.value === '') {
@@ -325,7 +332,6 @@ function App() {
             // aria-labelledby="simple-modal-title"
             // aria-describedby="simple-modal-description"
             aria-labelledby="contained-modal-title-vcenter"
-
             className='paper center ModalDiv'
             hideBackdrop={true}
          
@@ -356,7 +362,6 @@ function App() {
                 <label>Date:</label> <br></br><input type='date' placeholder="Enter Date" name='Date' required></input><br></br>
                 <br></br>
                 <input type="submit" value="Submit" />
-
               </form>
             </div>
           </Modal>
@@ -371,7 +376,6 @@ function App() {
           // enableBrowserTooltips={true}
           // tooltipShowDelay={{ tooltipShowDelay: 2 }}
           // sideBar={true}
-
           components={{
             customNumberFloatingFilter: getNumberFloatingFilterComponent(),
           }}
