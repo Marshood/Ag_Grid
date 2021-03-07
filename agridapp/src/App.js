@@ -19,6 +19,8 @@ function App() {
   const [rowData, setRowData] = useState([]);
   const [open, setOpen] = React.useState(false);
   const [SelectionChanged, seTSelectionChanged] = useState(null)
+  const [newDataAfterDelete, seTnewDataAfterDelete] = useState([])
+
   const saleFilterParams = {
     allowedCharPattern: '\\d\\-\\,\\$',
     numberParser: function (text) {
@@ -44,6 +46,13 @@ function App() {
       }
     },
     {
+      headerName: "Sum(Percent_Avg)", field: 'Sum(Percent_Avg)', tooltipField: "Sum(Percent_Avg)"
+
+      , field: "Percent_Avg",
+      aggFunc: "sum",
+      enableValue: true
+    },
+    {
       headerName: "BarCode", field: 'BarCode', tooltipField: "BarCode", floatingFilterComponent: 'customNumberFloatingFilter',
       floatingFilterComponentParams: {
         // suppressFilterButton: true,
@@ -51,7 +60,7 @@ function App() {
       }
     },
     { headerName: "ProduName", field: 'ProduName', tooltipField: "ProduName" },
-    { headerName: "Segment", field: 'Segment', tooltipField: "Segment" ,rowGroup: true},
+    { headerName: "Segment", field: 'Segment', tooltipField: "Segment", rowGroup: true },
     { headerName: "Brand", field: 'Brand', tooltipField: "Brand" },
     { headerName: "Series", field: 'Series', tooltipField: "Series" },
     {
@@ -132,6 +141,12 @@ function App() {
         }
       }
     },
+    
+
+    // field="Percent_Avg",
+    // aggFunc="sum",
+    // enableValue=true
+
 
   ]
   function PercentFormatter(params) {
@@ -172,22 +187,50 @@ function App() {
 
   }
   function handleRemove() {
-    let newArray = []
-
-    if (SelectionChanged == [] || SelectionChanged == null) {
-      alert("Choose item to remove")
+    let newArray = [];
+     if (SelectionChanged == [] || SelectionChanged == null) {
+      alert("Choose item to remove");
     } else {
-      rowData.map(valueA => {
-        SelectionChanged.map(DeleteValue => {
-          if (valueA.id == DeleteValue.id) {
-            // alert("find one")
-          }
-          else { newArray.push(valueA) }
-        })
+      newArray = []
+      console.log("SelectionChanged")
+      console.log(SelectionChanged)
+      console.log("SelectionChanged")
+      console.log("0000000000000000000000000000")
+      console.log(rowData)
+      // rowData.map(valueA => {
+      //   SelectionChanged.map(DeleteValue => {
+      //     if (valueA.id == DeleteValue.id) {
+      //       let index=rowData.indexOf(DeleteValue)
+
+      //       setRowData(rowData.splice(index, index))
+  
+      //      }
+      //     // else if(valueA.id != DeleteValue.id) {
+      //     //   newArray.push(valueA);
+      //     //   alert(valueA.id)
+      //     //  }
+      //   })
+        
+      // })
+      
+      SelectionChanged.map(DeleteValue => {
+           let newRowData = rowData.filter(row => {
+            return row !== DeleteValue;
+          });
+           setRowData(newRowData)
+
+         
+        // else if(valueA.id != DeleteValue.id) {
+        //   newArray.push(valueA);
+        //   alert(valueA.id)
+        //  }
       })
-    }
-    setRowData(newArray)
-  }
+      
+      }
+    // setRowData(newArray)
+
+    // console.log(("newDataAfterDelete", newDataAfterDelete))
+   }
   function handleClose() {
     setOpen(false);
   }
@@ -301,7 +344,21 @@ function App() {
     console.log(evnet.api.getSelectedRows())
     seTSelectionChanged(evnet.api.getSelectedRows())
   }
-
+  function sumFunction(params) {
+    var result = 0;
+    params.values.forEach(function (value) {
+      if (typeof value === 'number') {
+        result += value;
+      }
+    });
+    return result;
+  }
+  function oneTwoThreeFunc(nodes) {
+    return 123;
+  }
+  function xyzFunc(nodes) {
+    return 'xyz';
+  }
   return (
     <div className="App">
       <div className="ag-theme-alpine center" style={{ height: '600px', width: '1000px' }}>
@@ -335,9 +392,7 @@ function App() {
                 <label>TotalPrice</label> <input type='number' placeholder="Enter TotalPrice" name='TotalPrice' required></input><br></br>
                 <label>Percent_TotalPrice</label> <input type='number' placeholder="Enter Percent_TotalPrice" name='Percent_TotalPrice' required></input><br></br>
                 <label>Percent_TotalAmount</label> <input type='number' placeholder="Enter Percent_TotalAmount" name='Percent_TotalAmount' required></input><br></br>
-
                 <label>TotalAmount</label> <input type='number' type='number' placeholder="Enter TotalAmount" name='TotalAmount' required></input><br></br>
-
                 <label>Percent_Avg</label> <input type='number' placeholder="Enter Percent_Avg" name='Percent_Avg' required></input><br></br>
                 <label>Percent_Profit</label> <input type='number' placeholder="Enter Percent_Profit" name='Percent_Profit' required></input><br></br>
                 <label>Percent_MarketAmount</label> <input type='number' placeholder="Enter Percent_MarketAmount" name='Percent_MarketAmount' required></input><br></br>
@@ -345,11 +400,9 @@ function App() {
                 <label>Status</label> <input placeholder="Enter Status" name='Status' required></input><br></br>
                 <label>Remark</label> <input placeholder="Enter Remark" name='Remark' required></input><br></br>
                 <label>Date:</label> <input type='date' placeholder="Enter Date" name='Date' required></input><br></br>
-
                 <br></br>
                 <input type="submit" value="Submit" />
 
-                {/* < submit type="submit" onClick={handleSubmitData}>Add</submit> */}
               </form>
             </div>
           </Modal>
@@ -374,8 +427,16 @@ function App() {
             minWidth: 280,
             field: 'athlete',
           }}
-          modules={ [RowGroupingModule]}
-
+          modules={[RowGroupingModule]}
+          aggFuncs={{
+            sum: sumFunction,
+            '123': oneTwoThreeFunc,
+            xyz: xyzFunc,
+          }}
+          rowSelection='multiple'
+          groupSelectsChildren={true}
+          // suppressRowClickSelection={true}
+          // suppressAggFuncInHeader={true}
         >
 
         </AgGridReact>
