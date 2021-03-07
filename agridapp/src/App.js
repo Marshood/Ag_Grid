@@ -101,7 +101,7 @@ function App() {
 
   }
   function handleClose() {
-    setOpen(false);
+     setOpen(false);
   }
   function handleSubmitData(e) {
     e.preventDefault();
@@ -179,13 +179,17 @@ function App() {
           placeholder="Search"></input>
           <button type="button" onClick={handleOpen}>Add item </button>
           <button type="button" >Remove item </button>
-          <Modal
+           <Modal
             open={open}
             onClose={handleClose}
             // aria-labelledby="simple-modal-title"
             // aria-describedby="simple-modal-description"
-            className='paper center'
-          >
+            className='paper center ModalDiv'
+            hideBackdrop={true}
+            width="100px"
+            height="100px"
+            disableAutoFocus={true}
+           >
             <div>
               <button>Close</button>
               <br></br>
@@ -219,7 +223,7 @@ function App() {
               </form>
             </div>
           </Modal>
-        </div>
+         </div>
 
         <AgGridReact
           rowData={rowData}
