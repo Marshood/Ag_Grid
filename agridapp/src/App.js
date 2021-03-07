@@ -19,22 +19,8 @@ function App() {
   const [rowData, setRowData] = useState([]);
   const [open, setOpen] = React.useState(false);
   const [SelectionChanged, seTSelectionChanged] = useState(null)
-  const [newDataAfterDelete, seTnewDataAfterDelete] = useState([])
 
-  const saleFilterParams = {
-    allowedCharPattern: '\\d\\-\\,\\$',
-    numberParser: function (text) {
-      return text == null
-        ? null
-        : parseFloat(text.replace(',', '.').replace('$', ''));
-    },
-  };
-  const ageFilterParams = {
-    allowedCharPattern: '\\d\\-\\,', // note: ensure you escape as if you were creating a RegExp from a string
-    numberParser: text => {
-      return text == null ? null : parseFloat(text.replace(',', '.'));
-    }
-  };
+
   const columns = [
     {
       headerName: "id", field: 'id', checkboxSelection: true,// filter: 'agNumberColumnFilter',
@@ -141,11 +127,6 @@ function App() {
         }
       }
     },
-    
-
-    // field="Percent_Avg",
-    // aggFunc="sum",
-    // enableValue=true
 
 
   ]
@@ -188,52 +169,23 @@ function App() {
   }
   function handleRemove() {
     let newArray = [];
-     if (SelectionChanged == [] || SelectionChanged == null) {
+    if (SelectionChanged == [] || SelectionChanged == null) {
       alert("Choose item to remove");
     } else {
       newArray = []
-      console.log("SelectionChanged")
-      console.log(SelectionChanged)
-      console.log("SelectionChanged")
-      console.log("0000000000000000000000000000")
       console.log(rowData)
-      // rowData.map(valueA => {
-      //   SelectionChanged.map(DeleteValue => {
-      //     if (valueA.id == DeleteValue.id) {
-      //       let index=rowData.indexOf(DeleteValue)
-
-      //       setRowData(rowData.splice(index, index))
-  
-      //      }
-      //     // else if(valueA.id != DeleteValue.id) {
-      //     //   newArray.push(valueA);
-      //     //   alert(valueA.id)
-      //     //  }
-      //   })
-        
-      // })
-      
       SelectionChanged.map(DeleteValue => {
-           let newRowData = rowData.filter(row => {
-            return row !== DeleteValue;
-          });
-           setRowData(newRowData)
-
-         
-        // else if(valueA.id != DeleteValue.id) {
-        //   newArray.push(valueA);
-        //   alert(valueA.id)
-        //  }
+        let newRowData = rowData.filter(row => {
+          return row !== DeleteValue;
+        });
+        setRowData(newRowData)
       })
-      
-      }
-    // setRowData(newArray)
-
-    // console.log(("newDataAfterDelete", newDataAfterDelete))
-   }
+    }
+  }
   function handleClose() {
     setOpen(false);
   }
+  //add new data to table
   function handleSubmitData(e) {
     e.preventDefault();
     let inputID = e.target.inputID.value;
@@ -300,7 +252,7 @@ function App() {
     console.log(("newData", rowData))
     handleClose();
   }
-
+  // to sort by number's
   function getNumberFloatingFilterComponent() {
     function NumberFloatingFilter() { }
     NumberFloatingFilter.prototype.init = function (params) {
@@ -339,11 +291,12 @@ function App() {
     };
     return NumberFloatingFilter;
   }
-
+  // get selected row's 
   const onSelectionChanged = (evnet) => {
     console.log(evnet.api.getSelectedRows())
     seTSelectionChanged(evnet.api.getSelectedRows())
   }
+  // sum value
   function sumFunction(params) {
     var result = 0;
     params.values.forEach(function (value) {
@@ -371,35 +324,36 @@ function App() {
             onClose={handleClose}
             // aria-labelledby="simple-modal-title"
             // aria-describedby="simple-modal-description"
+            aria-labelledby="contained-modal-title-vcenter"
+
             className='paper center ModalDiv'
             hideBackdrop={true}
-            width="100px"
-            height="100px"
+         
             disableAutoFocus={true}
-          >
-            <div>
-              <button>Close</button>
+           >
+            <div className='Modal_div'>
+              <button onClick={handleClose}>Close</button>
               <br></br>
               <br></br>
               <form onSubmit={(e) => handleSubmitData(e)}>
                 <h1>Adding new Item</h1>
-                <label>ID</label> <input type='number' placeholder="Enter id" name='inputID' required></input> <br></br>
-                <label>BarCode</label> <input type='number' placeholder="Enter BarCode" name='BarCode' required></input><br></br>
-                <label>ProduName</label> <input placeholder="Enter ProduName" name='ProduName' required></input><br></br>
-                <label>Segment</label> <input placeholder="Enter Segment" name='Segment' required></input><br></br>
-                <label>Brand</label> <input placeholder="Enter Brand" name='Brand' required></input><br></br>
-                <label>Series</label> <input placeholder="Enter Series" name='Series' required></input><br></br>
-                <label>TotalPrice</label> <input type='number' placeholder="Enter TotalPrice" name='TotalPrice' required></input><br></br>
-                <label>Percent_TotalPrice</label> <input type='number' placeholder="Enter Percent_TotalPrice" name='Percent_TotalPrice' required></input><br></br>
-                <label>Percent_TotalAmount</label> <input type='number' placeholder="Enter Percent_TotalAmount" name='Percent_TotalAmount' required></input><br></br>
-                <label>TotalAmount</label> <input type='number' type='number' placeholder="Enter TotalAmount" name='TotalAmount' required></input><br></br>
-                <label>Percent_Avg</label> <input type='number' placeholder="Enter Percent_Avg" name='Percent_Avg' required></input><br></br>
-                <label>Percent_Profit</label> <input type='number' placeholder="Enter Percent_Profit" name='Percent_Profit' required></input><br></br>
-                <label>Percent_MarketAmount</label> <input type='number' placeholder="Enter Percent_MarketAmount" name='Percent_MarketAmount' required></input><br></br>
-                <label>MarketPrice</label> <input type='number' placeholder="Enter MarketPrice" name='MarketPrice' required></input><br></br>
-                <label>Status</label> <input placeholder="Enter Status" name='Status' required></input><br></br>
-                <label>Remark</label> <input placeholder="Enter Remark" name='Remark' required></input><br></br>
-                <label>Date:</label> <input type='date' placeholder="Enter Date" name='Date' required></input><br></br>
+                <label>ID </label> <br></br><input type='number' placeholder="Enter id" name='inputID' required></input> <br></br>
+                <label>BarCode</label> <br></br><input type='number' placeholder="Enter BarCode" name='BarCode' required></input><br></br>
+                <label>ProduName</label><br></br> <input placeholder="Enter ProduName" name='ProduName' required></input><br></br>
+                <label>Segment</label><br></br> <input placeholder="Enter Segment" name='Segment' required></input><br></br>
+                <label>Brand</label> <br></br><input placeholder="Enter Brand" name='Brand' required></input><br></br>
+                <label>Series</label> <br></br><input placeholder="Enter Series" name='Series' required></input><br></br>
+                <label>TotalPrice</label> <br></br><input type='number' placeholder="Enter TotalPrice" name='TotalPrice' required></input><br></br>
+                <label>Percent_TotalPrice</label><br></br> <input type='number' placeholder="Enter Percent_TotalPrice" name='Percent_TotalPrice' required></input><br></br>
+                <label>Percent_TotalAmount</label> <br></br><input type='number' placeholder="Enter Percent_TotalAmount" name='Percent_TotalAmount' required></input><br></br>
+                <label>TotalAmount</label><br></br> <input type='number' type='number' placeholder="Enter TotalAmount" name='TotalAmount' required></input><br></br>
+                <label>Percent_Avg</label><br></br> <input type='number' placeholder="Enter Percent_Avg" name='Percent_Avg' required></input><br></br>
+                <label>Percent_Profit</label> <br></br><input type='number' placeholder="Enter Percent_Profit" name='Percent_Profit' required></input><br></br>
+                <label>Percent_MarketAmount</label> <br></br><input type='number' placeholder="Enter Percent_MarketAmount" name='Percent_MarketAmount' required></input><br></br>
+                <label>MarketPrice</label> <br></br><input type='number' placeholder="Enter MarketPrice" name='MarketPrice' required></input><br></br>
+                <label>Status</label> <br></br><input placeholder="Enter Status" name='Status' required></input><br></br>
+                <label>Remark</label> <br></br><input placeholder="Enter Remark" name='Remark' required></input><br></br>
+                <label>Date:</label> <br></br><input type='date' placeholder="Enter Date" name='Date' required></input><br></br>
                 <br></br>
                 <input type="submit" value="Submit" />
 
@@ -435,8 +389,8 @@ function App() {
           }}
           rowSelection='multiple'
           groupSelectsChildren={true}
-          // suppressRowClickSelection={true}
-          // suppressAggFuncInHeader={true}
+        // suppressRowClickSelection={true}
+        // suppressAggFuncInHeader={true}
         >
 
         </AgGridReact>
