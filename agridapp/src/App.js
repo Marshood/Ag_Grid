@@ -95,7 +95,6 @@ function App() {
       sort: 'asc',
     },
   };
- 
   function handleOpen() {
     setOpen(true);
 
@@ -105,7 +104,6 @@ function App() {
   }
   function handleSubmitData(e) {
     e.preventDefault();
-
     let inputID = e.target.inputID.value;
     let BarCode = e.target.BarCode.value;
     let ProduName = e.target.ProduName.value;
@@ -127,8 +125,6 @@ function App() {
     var dateControl = document.querySelector('input[type="date"]');
     dateControl.value = '2017-06-01';
     console.log(dateControl.value); // prints "2017-06-01"
-
-
     let newData = {
       "id": inputID,
       "BarCode": BarCode,
@@ -170,7 +166,7 @@ function App() {
       "date": dateControl.value
     }])  
      console.log(("newData", rowData))
-     // handleClose();
+     handleClose();
   }
   return (
     <div className="App">
