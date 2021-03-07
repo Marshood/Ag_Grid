@@ -140,6 +140,7 @@ function App() {
     filter: true,
     floatingFilter: true,
     flex: true,
+   
 
   };
   const onGridReady = (params) => {
@@ -169,17 +170,35 @@ function App() {
   }
   function handleRemove() {
     let newArray = [];
+    console.log("SelectionChanged")
+    console.log(SelectionChanged)
     if (SelectionChanged == [] || SelectionChanged == null) {
       alert("Choose item to remove");
     } else {
-      newArray = []
+      newArray = rowData;
+      let newRowData;
       console.log(rowData)
       SelectionChanged.map(DeleteValue => {
-        let newRowData = rowData.filter(row => {
+        alert(DeleteValue.id)
+         newRowData = newArray.filter(row => {
           return row !== DeleteValue;
         });
-        setRowData(newRowData)
-      })
+        newArray=newRowData;
+        console.log("newRowData",newRowData ,DeleteValue.id)
+        setRowData(newRowData);
+       })
+      // for (let i = 0; i < SelectionChanged.length; i++) {
+      //   alert("SelectionChanged",SelectionChanged.length)
+      //    newRowData = rowData.filter(function (rowData) {
+      //     return rowData.id != SelectionChanged[i].id;
+      //   }).map(function (rowData) {
+      //     return rowData;
+      //   })
+      //   console.log("newRowData", newRowData)
+      //   setRowData(newRowData);
+      // }
+      seTSelectionChanged(null)
+
     }
   }
   function handleClose() {
@@ -262,12 +281,11 @@ function App() {
       this.currentValue = null;
       this.eFilterInput = this.eGui.querySelector('input');
       this.eFilterInput.style.color = params.color;
-      
-      this.eFilterInput.style.position='absolute';
-      this.eFilterInput.style.left='10px';
-      this.eFilterInput.style.right='10px'
-      this.eFilterInput.style.top='10px'
-      this.eFilterInput.style.bottom='10px'
+      this.eFilterInput.style.position = 'absolute';
+      this.eFilterInput.style.left = '10px';
+      this.eFilterInput.style.right = '10px'
+      this.eFilterInput.style.top = '10px'
+      this.eFilterInput.style.bottom = '10px'
 
       var that = this;
       function onInputBoxChanged() {
@@ -334,9 +352,9 @@ function App() {
             aria-labelledby="contained-modal-title-vcenter"
             className='paper center ModalDiv'
             hideBackdrop={true}
-         
+
             disableAutoFocus={true}
-           >
+          >
             <div className='Modal_div'>
               <button onClick={handleClose}>Close</button>
               <br></br>
